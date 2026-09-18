@@ -1,0 +1,25 @@
+ap3-modular/
+├── index.html                   # Halaman utama (tampilan HTML bersih)
+├── package.json                 # Pengatur tipe modul JavaScript ("type": "module")
+├── css/                         # Kumpulan file desain tampilan (CSS)
+│   ├── main.css                 # Warna dasar, jenis huruf, dan kotak input
+│   ├── layout.css               # Posisi tata letak (sidebar, header, kotak grid)
+│   ├── components.css           # Komponen kotak (modal pop-up, tabel data, tombol, status)
+│   └── print.css                # Pengaturan khusus saat dokumen dicetak (kertas F4/A4)
+└── js/                          # Kumpulan file otak logika (JavaScript)
+    ├── app.js                   # Pusat pengendali utama & penyatu semua fungsi
+    ├── config/                  
+    │   └── constants.js         # Daftar tetap (pasal-pasal UU, PMK, PP, & nama kantor)
+    ├── state/                   
+    │   └── store.js             # Penyimpanan data sementara & sinkronisasi memori (LocalStorage)
+    ├── utils/                   
+    │   └── formatters.js        # Alat bantu penformat teks, rupiah, tanggal, jam, & terbilang
+    ├── modules/                 
+    │   ├── auth.js              # Urusan login, cek akun, dan hak akses (role)
+    │   ├── disposisi.js         # Tombol terima/tolak, tabel disposisi, dan kirim berkas
+    │   ├── perkara.js           # Input data perkara, validasi, nomor otomatis, & unduh Excel/PDF
+    │   ├── editor.js            # Pengatur parameter dokumen laporan & tindak lanjut
+    │   └── ui.js                # Pengatur jendela modal, notifikasi toast, & ukuran kertas
+    └── templates/               
+        ├── laporan.js           # Cetak naskah resmi (LPP, LPF, SPLIT, SPRIN, BA Cacah, LHP)
+        └── tindaklanjut.js      # Cetak dokumen lanjutan (BAST, Buka Segel, KEP BDN, SPSA, Limpah)
