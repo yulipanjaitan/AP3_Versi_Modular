@@ -190,9 +190,26 @@ export function populatePenyidikDropdownForDisposisi() {
 // 1. KHUSUS SIMPAN DRAF (Penyidik boleh kosong)
 export function simpanDraftDisposisi() {
   let pelaku = document.getElementById('dsp_nama_pelaku') ? document.getElementById('dsp_nama_pelaku').value.trim() : '';
-  let jenisPerkara = document.getElementById('dsp_jenis_perkara') ? document.getElementById('dsp_jenis_perkara').value.trim() : '';
-  let dokPemberitahuan = document.getElementById('dsp_dokumen_pemberitahuan') ? document.getElementById('dsp_dokumen_pemberitahuan').value.trim() : 'Tanpa Dokumen';
+
+  // === PERBAIKAN BACA JENIS PERKARA (SELECT ATAU MANUAL) ===
+  let jenisPerkaraSelect = document.getElementById('dsp_jenis_perkara_select') ? document.getElementById('dsp_jenis_perkara_select').value : '';
+  let jenisPerkaraManual = document.getElementById('dsp_jenis_perkara') ? document.getElementById('dsp_jenis_perkara').value.trim() : '';
+  let jenisPerkara = jenisPerkaraManual || (jenisPerkaraSelect !== '-' ? jenisPerkaraSelect : '');
+
+  // === PERBAIKAN BACA DOKUMEN PEMBERITAHUAN LENGKAP ===
+  let jenisDokSelect = document.getElementById('dsp_jenis_dok_select') ? document.getElementById('dsp_jenis_dok_select').value : 'Tanpa Dokumen';
+  let jenisDokManual = document.getElementById('dsp_jenis_dok_manual') ? document.getElementById('dsp_jenis_dok_manual').value.trim() : '';
+  let nomorDok = document.getElementById('dsp_nomor_dok') ? document.getElementById('dsp_nomor_dok').value.trim() : '';
+  
+  let jenisDokFinal = jenisDokSelect === 'Lainnya' ? jenisDokManual : jenisDokSelect;
+  let dokPemberitahuan = jenisDokFinal;
+  if (jenisDokFinal && jenisDokFinal !== 'Tanpa Dokumen' && nomorDok) {
+    dokPemberitahuan = `${jenisDokFinal} Nomor ${nomorDok}`;
+  }
+
+  // === PERBAIKAN BACA TANGGAL DOKUMEN ===
   let tglDokPemberitahuan = document.getElementById('dsp_tgl_dokumen') ? document.getElementById('dsp_tgl_dokumen').value : '';
+
   let uraianBarang = document.getElementById('dsp_uraian_barang') ? document.getElementById('dsp_uraian_barang').value.trim() : '';
   let noLp = document.getElementById('dsp_no_lp') ? document.getElementById('dsp_no_lp').value.trim() : '';
   let tglLp = document.getElementById('dsp_tgl_lp') ? document.getElementById('dsp_tgl_lp').value : '';
@@ -255,13 +272,12 @@ export function simpanDraftDisposisi() {
   }
   
   if (typeof savePerkaraToStorage === 'function') savePerkaraToStorage();
-
   if (typeof closeDisposisiModal === 'function') closeDisposisiModal();
   if (typeof renderDisposisiTable === 'function') renderDisposisiTable();
   if (typeof window.renderPerkaraTable === 'function') window.renderPerkaraTable();
   if (typeof window.updateDashboardStats === 'function') window.updateDashboardStats();
 
-currentDisposisiPage = 1;
+  currentDisposisiPage = 1;
 
   if (typeof closeDisposisiModal === 'function') closeDisposisiModal();
   if (typeof renderDisposisiTable === 'function') renderDisposisiTable();
@@ -272,9 +288,26 @@ currentDisposisiPage = 1;
 // 2. KHUSUS KIRIM DISPOSISI (Wajib pilih penyidik dan lengkap)
 export function kirimDisposisiBerkat() {
   let pelaku = document.getElementById('dsp_nama_pelaku') ? document.getElementById('dsp_nama_pelaku').value.trim() : '';
-  let jenisPerkara = document.getElementById('dsp_jenis_perkara') ? document.getElementById('dsp_jenis_perkara').value.trim() : '';
-  let dokPemberitahuan = document.getElementById('dsp_dokumen_pemberitahuan') ? document.getElementById('dsp_dokumen_pemberitahuan').value.trim() : 'Tanpa Dokumen';
+
+  // === PERBAIKAN BACA JENIS PERKARA (SELECT ATAU MANUAL) ===
+  let jenisPerkaraSelect = document.getElementById('dsp_jenis_perkara_select') ? document.getElementById('dsp_jenis_perkara_select').value : '';
+  let jenisPerkaraManual = document.getElementById('dsp_jenis_perkara') ? document.getElementById('dsp_jenis_perkara').value.trim() : '';
+  let jenisPerkara = jenisPerkaraManual || (jenisPerkaraSelect !== '-' ? jenisPerkaraSelect : '');
+
+  // === PERBAIKAN BACA DOKUMEN PEMBERITAHUAN LENGKAP ===
+  let jenisDokSelect = document.getElementById('dsp_jenis_dok_select') ? document.getElementById('dsp_jenis_dok_select').value : 'Tanpa Dokumen';
+  let jenisDokManual = document.getElementById('dsp_jenis_dok_manual') ? document.getElementById('dsp_jenis_dok_manual').value.trim() : '';
+  let nomorDok = document.getElementById('dsp_nomor_dok') ? document.getElementById('dsp_nomor_dok').value.trim() : '';
+  
+  let jenisDokFinal = jenisDokSelect === 'Lainnya' ? jenisDokManual : jenisDokSelect;
+  let dokPemberitahuan = jenisDokFinal;
+  if (jenisDokFinal && jenisDokFinal !== 'Tanpa Dokumen' && nomorDok) {
+    dokPemberitahuan = `${jenisDokFinal} Nomor ${nomorDok}`;
+  }
+
+  // === PERBAIKAN BACA TANGGAL DOKUMEN ===
   let tglDokPemberitahuan = document.getElementById('dsp_tgl_dokumen') ? document.getElementById('dsp_tgl_dokumen').value : '';
+
   let uraianBarang = document.getElementById('dsp_uraian_barang') ? document.getElementById('dsp_uraian_barang').value.trim() : '';
   let noLp = document.getElementById('dsp_no_lp') ? document.getElementById('dsp_no_lp').value.trim() : '';
   let tglLp = document.getElementById('dsp_tgl_lp') ? document.getElementById('dsp_tgl_lp').value : '';
@@ -284,7 +317,6 @@ export function kirimDisposisiBerkat() {
   let tglSprin = document.getElementById('dsp_tgl_sprin') ? document.getElementById('dsp_tgl_sprin').value : '';
   let targetPenyidik = document.getElementById('dsp_target_penyidik') ? document.getElementById('dsp_target_penyidik').value : '-';
 
-  // Validasi ketat: Penyidik wajib dipilih!
   if(!noLp || !pelaku || !targetPenyidik || targetPenyidik === '-') {
     showToast("BELUM LENGKAP", "Nomor LP, Nama Pelaku, dan Penyidik Tujuan WAJIB diisi untuk mengirim disposisi!", "warning");
     return;
@@ -338,13 +370,12 @@ export function kirimDisposisiBerkat() {
   }
   
   if (typeof savePerkaraToStorage === 'function') savePerkaraToStorage();
-
   if (typeof closeDisposisiModal === 'function') closeDisposisiModal();
   if (typeof renderDisposisiTable === 'function') renderDisposisiTable();
   if (typeof window.renderPerkaraTable === 'function') window.renderPerkaraTable();
   if (typeof window.updateDashboardStats === 'function') window.updateDashboardStats();
 
-currentDisposisiPage = 1;
+  currentDisposisiPage = 1;
 
   if (typeof closeDisposisiModal === 'function') closeDisposisiModal();
   if (typeof renderDisposisiTable === 'function') renderDisposisiTable();
